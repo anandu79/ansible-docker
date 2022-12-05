@@ -1,0 +1,42 @@
+---  
+- name: "Setting up docker container using ansible"  
+  become: true  
+  hosts: all  
+  vars:  
+    package:   
+      - "docker"  
+  tasks:  
+      
+    - name: "Updating all packages"  
+      yum:  
+        name: "*"  
+        state: latest  
+    
+    - name: "Reboooting system"  
+      reboot:   
+        reboot_timeout: 300  
+        test_command: uptime 
+    - name: "uptime" 
+      shell: uptime 
+      register: uptime_output 
+    
+    - name: "Message" 
+      debug: 
+        var: uptime_output.stdout_lines                
+    
+    - name: "Docker installation"  
+      yum:  
+        name: "{{ package }}"  
+        state: present  
+    
+    - name: "adding existing user to group docker"  
+      user:  
+        name: ec2-user  
+        groups: docker  
+        append: yes            
+   
+    - name: "restarting/enabling docker service"  
+      service:  
+        name: docker  
+        state: restarted  
+        enabled: true
