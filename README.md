@@ -84,14 +84,16 @@ Add the below contents in it:
         name: "*"  
         state: latest  
     
-    - name: "Reboooting system"  
+    - name: "Reboooting system"   # ============> Reboot a machine, wait for it to go down, come back up, and respond to commands.
       reboot:   
         reboot_timeout: 300  
-        test_command: uptime 
-    - name: "uptime" 
+        test_command: uptime      # ============> Executes a test (uptime) command in the remote instance.
+   
+   - name: "uptime" 
       shell: uptime 
       register: uptime_output 
-    - name: "Message" 
+   
+   - name: "Message" 
       debug: 
         var: uptime_output.stdout_lines                
     
