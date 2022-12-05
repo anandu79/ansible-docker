@@ -16,6 +16,7 @@
       reboot:   
         reboot_timeout: 300  
         test_command: uptime 
+    
     - name: "uptime" 
       shell: uptime 
       register: uptime_output 
